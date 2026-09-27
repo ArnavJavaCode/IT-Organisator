@@ -343,7 +343,7 @@ public class ViewController implements ActionListener, KeyListener, MouseListene
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        //programController.mouseClicked(e); entfernt 11.11.21 KNB - Simplifizierung & MVC für ProgramController
+        programController.mouseClicked(e);
         Iterator<Interactable> iterator = scenes.get(currentScene).interactables.iterator();
         while (iterator.hasNext() && notChangingInteractables){
             Interactable tmpInteractable = iterator.next();

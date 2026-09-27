@@ -1,0 +1,31 @@
+package my_project.model;
+
+
+public class Desk {
+    private String id;
+    private boolean isReserved;
+    private double x, y, width, height; // Die reinen Positionsdaten
+
+    public Desk(String id, double x, double y, double width, double height) {
+        this.id = id;
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+        this.isReserved = false;
+    }
+
+    public void toggleReservation() {
+        this.isReserved = !this.isReserved;
+    }
+
+    // Getter und Setter
+    public String getId() { return id; }
+    public boolean isReserved() { return isReserved; }
+    public void setReserved(boolean reserved) { this.isReserved = reserved; }
+    public double getX() { return x; }
+    public double getY() { return y; }
+    public double getWidth() { return width; }
+    public double getHeight() { return height; }
+}
+
