@@ -5,6 +5,8 @@ import KAGO_framework.model.abitur.datenstrukturen.List;
 import my_project.model.Desk;
 import my_project.view.BueroMap;
 import my_project.view.DeskView;
+
+import javax.swing.*;
 import java.awt.event.MouseEvent;
 
 
@@ -25,6 +27,7 @@ public class ProgramController {
     private final ViewController viewController;  // diese Referenz soll auf ein Objekt der Klasse viewController zeigen. Über dieses Objekt wird das Fenster gesteuert.
     private final BueroMap plan = new BueroMap(0, 0);
     private List<Desk> deskList;
+    public String currentEmployeeName;
 
     /**
      * Konstruktor
@@ -40,6 +43,7 @@ public class ProgramController {
     }
 
     public void startProgram() {
+        showLoginPanel();
         viewController.draw(plan.drawMap());
         addDeskToBuero("1", 5, 0, 92, 40);
         addDeskToBuero("1", 115, 0, 92, 40);
@@ -58,6 +62,14 @@ public class ProgramController {
         addDeskToBuero("1", 935, 512, 40, 60);
 
 
+    }
+
+    private void showLoginPanel() {
+        String input = JOptionPane.showInputDialog(
+                null, "Bitte gibt deinen Namen ein", JOptionPane.QUESTION_MESSAGE
+        );
+
+        currentEmployeeName = input;
     }
 
     private void addDeskToBuero(String id, double x, double y, double width, double height) {
@@ -96,7 +108,7 @@ public class ProgramController {
             if (mouseX >= currentDesk.getX() && mouseX <= currentDesk.getX() + currentDesk.getWidth() &&
                     mouseY >= currentDesk.getY() && mouseY <= currentDesk.getY() + currentDesk.getHeight()) {
 
-                currentDesk.toggleReservation();
+                currentDesk.toggleReservation(currentEmployeeName);
 
 
                 // 2. Später für SQL:

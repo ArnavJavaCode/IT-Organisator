@@ -4,6 +4,7 @@ package my_project.model;
 public class Desk {
     private String id;
     private boolean isReserved;
+    private String reservedBy;
     private double x, y, width, height; // Die reinen Positionsdaten
 
     public Desk(String id, double x, double y, double width, double height) {
@@ -15,8 +16,13 @@ public class Desk {
         this.isReserved = false;
     }
 
-    public void toggleReservation() {
+    public void toggleReservation(String employeeName) {
         this.isReserved = !this.isReserved;
+        if (this.isReserved) {
+            this.reservedBy = employeeName; // Set name on reservation
+        } else {
+            this.reservedBy = ""; // Clear name on cancel
+        }
     }
 
     // Getter und Setter
