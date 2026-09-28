@@ -1,6 +1,8 @@
 package my_project.control;
 
+import KAGO_framework.control.DatabaseController;
 import KAGO_framework.control.ViewController;
+import KAGO_framework.model.abitur.datenbanken.mysql.DatabaseConnector;
 import KAGO_framework.model.abitur.datenstrukturen.List;
 import my_project.model.Desk;
 import my_project.view.BueroMap;
@@ -60,13 +62,17 @@ public class ProgramController {
         addDeskToBuero("1", 375, 565, 46, 40);
         addDeskToBuero("1", 486, 565, 46, 40);
         addDeskToBuero("1", 935, 512, 40, 60);
+        addDeskToBuero("1", 170, 200, 55, 35);
+        addDeskToBuero("1", 260, 200, 55, 35);
+        addDeskToBuero("1", 172, 387, 55, 35);
+        addDeskToBuero("1", 259, 387, 55, 35);
 
 
     }
 
     private void showLoginPanel() {
         String input = JOptionPane.showInputDialog(
-                null, "Bitte gibt deinen Namen ein", JOptionPane.QUESTION_MESSAGE
+                null, "Bitte gibt deinen Namen ein"
         );
 
         currentEmployeeName = input;
