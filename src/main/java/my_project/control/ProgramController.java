@@ -90,7 +90,13 @@ public class ProgramController {
             String login = "INSERT INTO 26_arn_mitarbeiter (Vorname, Abteilung) VALUES ('" + currentEmployeeName + "', 'Büro');";
             db.executeStatement(login);
 
-            this.currentMitarbeiterId = 1;
+            db.executeStatement("SELECT LAST_INSERT_ID();");
+            if (db.getCurrentQueryResult() != null && db.getCurrentQueryResult().getData().length > 0) {
+                this.currentMitarbeiterId = Integer.parseInt(db.getCurrentQueryResult().getData()[0][0]);
+            } else {
+                this.currentMitarbeiterId = 1;
+            }
+
         }
 
         private void addDeskToBuero(double x, double y, double width, double height) {
@@ -100,10 +106,6 @@ public class ProgramController {
             deskList.append(newDeskModel);
 
             viewController.draw(new DeskView(newDeskModel));
-
-            String sqlBefehl = "INSERT INTO 26_arn_sitzplaetze (`Sitz-ID`, ist_reserviert, Mitarbeiter_ID) " +
-                    "VALUES (" + nextDeskId + ", 0, NULL);";
-            db.executeStatement(sqlBefehl);
 
             nextDeskId++;
         }
@@ -127,14 +129,10 @@ public class ProgramController {
                     currentDesk.toggleReservation(currentEmployeeName);
                     boolean istJetztReserviert = currentDesk.isReserved();
                     int reserviertBit = istJetztReserviert ? 1 : 0;
-
                     String fremdschluesselId = istJetztReserviert ? String.valueOf(this.currentMitarbeiterId) : "NULL";
 
-
-                    String sqlBefehl = "UPDATE 26_arn_sitzplaetze SET " +
-                            "ist_reserviert = " + reserviertBit + ", " +
-                            "Mitarbeiter_ID = " + fremdschluesselId + " " +
-                            "WHERE `Sitz-ID` = " + currentDesk.getId() + ";";
+                    String sqlBefehl = "INSERT INTO 26_arn_sitzplaetze (`Sitz-ID`, ist_reserviert, `Mitarbeiter_ID`) " +
+                            "VALUES (" + currentDesk.getId() + ", " + reserviertBit + ", " + fremdschluesselId + ");";
 
                     db.executeStatement(sqlBefehl);
 
