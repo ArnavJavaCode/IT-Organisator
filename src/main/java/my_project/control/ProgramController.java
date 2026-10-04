@@ -43,7 +43,7 @@ public class ProgramController {
             this.deskList = new List<Desk>();
             this.viewController = viewController;
 
-            // Deine echten Verbindungsdaten eintragen
+
             db = new DatabaseController("mysql.webhosting24.1blu.de", "3306", "db85565x2810214", "s85565_2810214", "locker1337SQLproggen!");
             db.connect();
         }
@@ -128,11 +128,10 @@ public class ProgramController {
 
                     currentDesk.toggleReservation(currentEmployeeName);
                     boolean istJetztReserviert = currentDesk.isReserved();
-                    int reserviertBit = istJetztReserviert ? 1 : 0;
                     String fremdschluesselId = istJetztReserviert ? String.valueOf(this.currentMitarbeiterId) : "NULL";
 
-                    String sqlBefehl = "INSERT INTO 26_arn_sitzplaetze (`Sitz-ID`, ist_reserviert, `Mitarbeiter_ID`) " +
-                            "VALUES (" + currentDesk.getId() + ", " + reserviertBit + ", " + fremdschluesselId + ");";
+                    String sqlBefehl = "INSERT INTO 26_arn_reserv_sitzplaetze (`Sitz-ID`, `Mitarbeiter_ID`) " +
+                            "VALUES (" + currentDesk.getId() + ", " + fremdschluesselId + ");";
 
                     db.executeStatement(sqlBefehl);
 
