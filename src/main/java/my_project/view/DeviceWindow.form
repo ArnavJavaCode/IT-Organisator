@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="my_project.view.DeviceWindow">
+  <grid id="27dc6" binding="mainPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
+    <constraints>
+      <xy x="20" y="20" width="900" height="600"/>
+    </constraints>
+    <properties/>
+    <border type="none"/>
+    <children>
+      <grid id="a1001" layout-manager="FlowLayout" hgap="8" vgap="8" flow-align="0">
+        <constraints border-constraint="North"/>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <component id="a1002" class="javax.swing.JLabel">
+            <constraints/>
+            <properties>
+              <text value="Suche:"/>
+            </properties>
+          </component>
+          <component id="a1003" class="javax.swing.JTextField" binding="searchField">
+            <constraints/>
+            <properties>
+              <columns value="20"/>
+            </properties>
+          </component>
+          <component id="a1004" class="javax.swing.JLabel">
+            <constraints/>
+            <properties>
+              <text value="Typ:"/>
+            </properties>
+          </component>
+          <component id="a1005" class="javax.swing.JComboBox" binding="typeFilterBox">
+            <constraints/>
+            <properties>
+              <model>
+                <item value="Alle"/>
+                <item value="Laptop"/>
+                <item value="Monitor"/>
+                <item value="Headset"/>
+                <item value="Sonstiges"/>
+              </model>
+            </properties>
+          </component>
+          <component id="a1006" class="javax.swing.JCheckBox" binding="availableOnlyCheck">
+            <constraints/>
+            <properties>
+              <text value="Nur verfügbare"/>
+            </properties>
+          </component>
+          <component id="a1007" class="javax.swing.JButton" binding="resetButton">
+            <constraints/>
+            <properties>
+              <text value="Zurücksetzen"/>
+            </properties>
+          </component>
+        </children>
+      </grid>
+      <tabbedpane id="a2001" binding="tabbedPane">
+        <constraints border-constraint="Center"/>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <grid id="a2002" layout-manager="BorderLayout" hgap="0" vgap="0">
+            <constraints>
+              <tabbedpane title="Geräte"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <scrollpane id="a2003">
+                <constraints border-constraint="Center"/>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <component id="a2004" class="javax.swing.JTable" binding="deviceTable">
+                    <constraints/>
+                    <properties/>
+                  </component>
+                </children>
+              </scrollpane>
+            </children>
+          </grid>
+          <grid id="a2005" layout-manager="BorderLayout" hgap="0" vgap="0">
+            <constraints>
+              <tabbedpane title="Verliehen"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <scrollpane id="a2006">
+                <constraints border-constraint="Center"/>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <component id="a2007" class="javax.swing.JTable" binding="loanTable">
+                    <constraints/>
+                    <properties/>
+                  </component>
+                </children>
+              </scrollpane>
+            </children>
+          </grid>
+        </children>
+      </tabbedpane>
+      <grid id="a3001" layout-manager="FlowLayout" hgap="8" vgap="8" flow-align="0">
+        <constraints border-constraint="South"/>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <component id="a3002" class="javax.swing.JLabel">
+            <constraints/>
+            <properties>
+              <text value="Mitarbeiter:"/>
+            </properties>
+          </component>
+          <component id="a3003" class="javax.swing.JComboBox" binding="employeeBox">
+            <constraints/>
+            <properties/>
+          </component>
+          <component id="a3004" class="javax.swing.JButton" binding="lendButton">
+            <constraints/>
+            <properties>
+              <text value="Ausleihen"/>
+            </properties>
+          </component>
+          <component id="a3005" class="javax.swing.JButton" binding="returnButton">
+            <constraints/>
+            <properties>
+              <text value="Zurückgeben"/>
+            </properties>
+          </component>
+          <component id="a3006" class="javax.swing.JLabel" binding="statusLabel">
+            <constraints/>
+            <properties>
+              <text value=" "/>
+            </properties>
+          </component>
+        </children>
+      </grid>
+    </children>
+  </grid>
+</form>

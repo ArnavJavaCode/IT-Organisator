@@ -7,6 +7,7 @@ import KAGO_framework.model.abitur.datenstrukturen.List;
 import my_project.model.Desk;
 import my_project.view.BueroMap;
 import my_project.view.DeskView;
+import my_project.view.DeviceWindow;
 
 import javax.swing.*;
 import java.awt.event.MouseEvent;
@@ -33,6 +34,7 @@ public class ProgramController {
         public String currentEmployeeName;
         private int currentMitarbeiterId;
         private DatabaseController db;
+        private DeviceWindow deviceWindow;
 
         private int nextDeskId = 1;
 
@@ -51,6 +53,8 @@ public class ProgramController {
         public void startProgram() {
             showLoginPanel();
             viewController.draw(plan.drawMap());
+            this.deviceWindow = new DeviceWindow(db);
+            deviceWindow.open(db);
 
 
             addDeskToBuero(5, 0, 92, 40);

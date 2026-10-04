@@ -26,12 +26,12 @@ public class DatabaseController {
      * @param password das Passwort für den genannten Nutzer
      */
     public DatabaseController(String serverIP, String port, String database, String user, String password) {
-       connection = null;
-       this.connectionUrl = serverIP;
-       this.port = port;
-       this.user = user;
-       this.pass = password;
-       this.database = database;
+        connection = null;
+        this.connectionUrl = serverIP;
+        this.port = port;
+        this.user = user;
+        this.pass = password;
+        this.database = database;
     }
 
     /**
@@ -189,8 +189,96 @@ public class DatabaseController {
         return message;
     }
 
+    //***************** Geräteverleih *****************
+
+    // Name der ID-Spalte in 26_arn_mitarbeiter. Wegen des Bindestrichs mit Backticks (`) geschrieben.
+    private static final String EMPLOYEE_ID = "`Mitarbeiter-ID`";
+
+    /**
+     * @return Zeilen mit den Spalten: ID, Typ, Bezeichnung, Verfügbar
+     */
+    public String[][] loadDevices() {
+        return queryRows(
+                "SELECT g.ID, g.Typ, g.Bezeichnung, g.Gesamtanzahl - COUNT(v.ID) AS Verfuegbar " +
+                        "FROM 26_nai_geraete g " +
+                        "LEFT JOIN 26_nai_verliehene_geraete v ON v.Geraet_ID = g.ID " +
+                        "GROUP BY g.ID, g.Typ, g.Bezeichnung, g.Gesamtanzahl " +
+                        "ORDER BY g.Typ, g.Bezeichnung;");
+    }
+
+    /**
+     * @return Zeilen mit den Spalten: Verleih-ID, Bezeichnung, Typ, Vorname, Datum
+     */
+    public String[][] loadLoans() {
+        return queryRows(
+                "SELECT v.ID, g.Bezeichnung, g.Typ, m.Vorname, DATE_FORMAT(v.Ausgeliehen_am, '%d.%m.%Y') " +
+                        "FROM 26_nai_verliehene_geraete v " +
+                        "JOIN 26_nai_geraete g ON v.Geraet_ID = g.ID " +
+                        "JOIN 26_arn_mitarbeiter m ON v.Mitarbeiter_ID = m." + EMPLOYEE_ID + " " +
+                        "ORDER BY v.Ausgeliehen_am DESC;");
+    }
+
+    /**
+     * @return Zeilen mit den Spalten: ID, Vorname
+     */
+    public String[][] loadEmployees() {
+        return queryRows("SELECT " + EMPLOYEE_ID + ", Vorname FROM 26_arn_mitarbeiter ORDER BY Vorname;");
+    }
+
+    /**
+     * Verleiht ein Stück des Geräts an einen Mitarbeiter.
+     *
+     * @return null, wenn alles geklappt hat, sonst eine Fehlermeldung zum Anzeigen
+     */
+    public String lendDevice(int deviceId, int employeeId) {
+        // Zuerst prüfen, ob noch ein Stück verfügbar ist
+        String[][] check = queryRows(
+                "SELECT g.Gesamtanzahl - COUNT(v.ID) " +
+                        "FROM 26_nai_geraete g " +
+                        "LEFT JOIN 26_nai_verliehene_geraete v ON v.Geraet_ID = g.ID " +
+                        "WHERE g.ID = " + deviceId + " " +
+                        "GROUP BY g.ID, g.Gesamtanzahl;");
+        if (check.length == 0) {
+            return "Gerät nicht gefunden.";
+        }
+        if (Integer.parseInt(check[0][0]) <= 0) {
+            return "Dieses Gerät ist aktuell nicht verfügbar.";
+        }
+
+        executeStatement(
+                "INSERT INTO 26_nai_verliehene_geraete (Geraet_ID, Mitarbeiter_ID) " +
+                        "VALUES (" + deviceId + ", " + employeeId + ");");
+        if (getErrorMessage() != null) {
+            return "Datenbankfehler: " + getErrorMessage();
+        }
+        return null;
+    }
+
+    /**
+     * Nimmt ein verliehenes Gerät zurück (löscht den Verleih-Eintrag).
+     *
+     * @return null, wenn alles geklappt hat, sonst eine Fehlermeldung zum Anzeigen
+     */
+    public String returnDevice(int loanId) {
+        executeStatement("DELETE FROM 26_nai_verliehene_geraete WHERE ID = " + loanId + ";");
+        if (getErrorMessage() != null) {
+            return "Datenbankfehler: " + getErrorMessage();
+        }
+        return null;
+    }
+
+    /**
+     * Schickt eine SELECT-Abfrage an die Datenbank und liefert die Ergebniszeilen.
+     * Bei einem Fehler wird die Meldung in der Konsole ausgegeben und ein leeres Feld geliefert.
+     */
+    private String[][] queryRows(String sql) {
+        executeStatement(sql);
+        QueryResult result = getCurrentQueryResult();
+        if (result == null) {
+            System.out.println("Datenbankfehler: " + getErrorMessage() + "  (Abfrage: " + sql + ")");
+            return new String[0][0];
+        }
+        return result.getData();
+    }
+
 }
-
-
-
-
