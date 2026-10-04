@@ -126,9 +126,8 @@ public class ProgramController {
                 if (mouseX >= currentDesk.getX() && mouseX <= currentDesk.getX() + currentDesk.getWidth() &&
                         mouseY >= currentDesk.getY() && mouseY <= currentDesk.getY() + currentDesk.getHeight()) {
 
-                    currentDesk.toggleReservation(currentEmployeeName);
-                    boolean istJetztReserviert = currentDesk.isReserved();
-                    String fremdschluesselId = istJetztReserviert ? String.valueOf(this.currentMitarbeiterId) : "NULL";
+                    currentDesk.toggleReservation();
+                    String fremdschluesselId = currentDesk.isReserved() ? String.valueOf(this.currentMitarbeiterId) : "NULL";
 
                     String sqlBefehl = "INSERT INTO 26_arn_reserv_sitzplaetze (`Sitz-ID`, `Mitarbeiter_ID`) " +
                             "VALUES (" + currentDesk.getId() + ", " + fremdschluesselId + ");";

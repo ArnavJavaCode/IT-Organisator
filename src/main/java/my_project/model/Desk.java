@@ -16,13 +16,9 @@ public class Desk {
         this.isReserved = false;
     }
 
-    public void toggleReservation(String employeeName) {
+    public void toggleReservation() {
         this.isReserved = !this.isReserved;
-        if (this.isReserved) {
-            this.reservedBy = employeeName; // Set name on reservation
-        } else {
-            this.reservedBy = ""; // Clear name on cancel
-        }
+
     }
 
     // Getter und Setter
