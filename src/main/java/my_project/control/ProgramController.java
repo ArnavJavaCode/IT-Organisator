@@ -127,18 +127,19 @@ public class ProgramController {
                         mouseY >= currentDesk.getY() && mouseY <= currentDesk.getY() + currentDesk.getHeight()) {
 
                     currentDesk.toggleReservation();
-                    String fremdschluesselId = currentDesk.isReserved() ? String.valueOf(this.currentMitarbeiterId) : "NULL";
 
-                    String sqlBefehl = "INSERT INTO 26_arn_reserv_sitzplaetze (`Sitz-ID`, `Mitarbeiter_ID`) " +
-                            "VALUES (" + currentDesk.getId() + ", " + fremdschluesselId + ");";
+                    String sqlBefehl;
 
-                    db.executeStatement(sqlBefehl);
+                    if (currentDesk.isReserved()) {
+                        String fremdschluesselId = String.valueOf(this.currentMitarbeiterId);
 
-                    if (db.getErrorMessage() != null) {
-                        System.err.println("Fehler: " + db.getErrorMessage());
+                         sqlBefehl = "INSERT INTO 26_arn_reserv_sitzplaetze (`Sitz-ID`, `Mitarbeiter_ID`) " +
+                                "VALUES (" + currentDesk.getId() + ", " + fremdschluesselId + ");";
+
                     } else {
-                        System.out.println("Kein Fehler!!!");
+                        sqlBefehl = "DELETE FROM 26_arn_reserv_sitzplaetze WHERE `Sitz-ID` = " + currentDesk.getId() + ";";
                     }
+                    db.executeStatement(sqlBefehl);
 
                     break;
                 }
